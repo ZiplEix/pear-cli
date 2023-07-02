@@ -1,5 +1,5 @@
 # Project-local
-./pear.cli
+pear-cli
 
 # Binaries for programs and plugins
 *.exe
