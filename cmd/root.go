@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 ZiplEix
-
 */
 package cmd
 
@@ -17,13 +16,18 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "pear-cli",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "A CLI tool to initialize and manage a Go lang API project",
+	Long: `A CLI tool to initialize and manage a Go lang API project:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+pear help you to create a new API project with a simple command line.
+
+It guide you with an interactive command line and let you choose your
+favourites tools (Fiber, Gin) to create a API.
+
+You can also choose to use a database (PostgreSQL, MySQL, MongoDB) and
+a ORM (GORM, Gorp, Xorm) to manage your database.
+
+You can also choose your Auth system (JWT, OAuth2) if you want to use one.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
