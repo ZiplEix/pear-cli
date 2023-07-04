@@ -5,6 +5,7 @@ import "fmt"
 type PearlSettings struct {
 	Name          string
 	Replacement   map[string]string
+	ApiLibrary    string
 	UsingDocker   bool
 	UsingDatabase bool
 	Database      string
@@ -18,6 +19,7 @@ func (s *PearlSettings) initSettings() {
 	s.Replacement = map[string]string{
 		"{{GO_VERSION}}": "1.20.2",
 	}
+	s.ApiLibrary = "Fiber"
 	s.UsingDocker = true
 	s.UsingDatabase = false
 	s.Database = ""
@@ -28,11 +30,16 @@ func (s *PearlSettings) PrintSettings() {
 	fmt.Println("Settings = {")
 	fmt.Println("\tName:", s.Name)
 	fmt.Println("\tReplacement:", s.Replacement)
+	fmt.Println("\tapiLibrary:", s.ApiLibrary)
 	fmt.Println("\tUsingDocker:", s.UsingDocker)
 	fmt.Println("\tUsingDatabase:", s.UsingDatabase)
 	fmt.Println("\tDatabase:", s.Database)
 	fmt.Println("\tOrm:", s.Orm)
 	fmt.Println("}")
+}
+
+func (s *PearlSettings) setApiLibrary(apiLibrary string) {
+	s.ApiLibrary = apiLibrary
 }
 
 func (s *PearlSettings) SetName(name string) {
