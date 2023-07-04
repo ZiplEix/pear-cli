@@ -3,9 +3,12 @@ package projectinit
 import "fmt"
 
 type PearlSettings struct {
-	Name        string
-	Replacement map[string]string
-	Docker      bool
+	Name          string
+	Replacement   map[string]string
+	UsingDocker   bool
+	UsingDatabase bool
+	Database      string
+	Orm           string
 }
 
 var Settings PearlSettings
@@ -15,25 +18,43 @@ func (s *PearlSettings) initSettings() {
 	s.Replacement = map[string]string{
 		"{{GO_VERSION}}": "1.20.2",
 	}
-	s.Docker = true
+	s.UsingDocker = true
+	s.UsingDatabase = false
+	s.Database = ""
+	s.Orm = ""
 }
 
 func (s *PearlSettings) PrintSettings() {
 	fmt.Println("Settings = {")
-	fmt.Println("  Name:", s.Name)
-	fmt.Println("  Replacement:", s.Replacement)
-	fmt.Println("  Docker:", s.Docker)
+	fmt.Println("\tName:", s.Name)
+	fmt.Println("\tReplacement:", s.Replacement)
+	fmt.Println("\tUsingDocker:", s.UsingDocker)
+	fmt.Println("\tUsingDatabase:", s.UsingDatabase)
+	fmt.Println("\tDatabase:", s.Database)
+	fmt.Println("\tOrm:", s.Orm)
 	fmt.Println("}")
+}
+
+func (s *PearlSettings) SetName(name string) {
+	s.Name = name
 }
 
 func (s *PearlSettings) ModifReplacement(key, value string) {
 	s.Replacement[key] = value
 }
 
-func (s *PearlSettings) setDocker(docker bool) {
-	s.Docker = docker
+func (s *PearlSettings) setUsingDocker(docker bool) {
+	s.UsingDocker = docker
 }
 
-func (s *PearlSettings) SetName(name string) {
-	s.Name = name
+func (s *PearlSettings) setUsingDatabase(database bool) {
+	s.UsingDatabase = database
+}
+
+func (s *PearlSettings) setDatabase(database string) {
+	s.Database = database
+}
+
+func (s *PearlSettings) setOrm(orm string) {
+	s.Orm = orm
 }
