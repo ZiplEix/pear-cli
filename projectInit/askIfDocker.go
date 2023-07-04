@@ -30,5 +30,5 @@ func AskForGoVersion() {
 		return
 	}
 
-	ModifReplacement("{{GO_VERSION}}", goVersion)
+	SetGoVersion(goVersion)
 }
