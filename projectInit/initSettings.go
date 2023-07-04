@@ -51,9 +51,11 @@ func SetName(name string) {
 }
 
 func ModifReplacement(key, value string) {
-	viper.Set("replacement", map[string]string{
-		key: value,
-	})
+	replacement := viper.GetStringMapString("replacement")
+
+	replacement[key] = value
+
+	viper.Set("replacement", replacement)
 }
 
 func SetUsingDocker(docker bool) {
