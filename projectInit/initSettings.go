@@ -1,67 +1,73 @@
 package projectinit
 
-import "fmt"
+import (
+	"fmt"
 
-type PearlSettings struct {
-	Name          string
-	Replacement   map[string]string
-	ApiLibrary    string
-	UsingDocker   bool
-	UsingDatabase bool
-	Database      string
-	Orm           string
-}
+	"github.com/spf13/viper"
+)
 
-var Settings PearlSettings
+func initSettings() {
+	viper.SetConfigName(".pear")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
 
-func (s *PearlSettings) initSettings() {
-	s.Name = "Go-API-with-pearl"
-	s.Replacement = map[string]string{
-		"{{GO_VERSION}}": "1.20.2",
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			fmt.Println("Config file not found")
+		} else {
+			fmt.Println("Config file found but another error occurred")
+		}
 	}
-	s.ApiLibrary = "Fiber"
-	s.UsingDocker = true
-	s.UsingDatabase = false
-	s.Database = ""
-	s.Orm = ""
+
+	viper.SetDefault("name", "Go-API-with-pearl")
+	viper.SetDefault("replacement", map[string]string{
+		"{{GO_VERSION}}": "1.20.2",
+	})
+	viper.SetDefault("apiLibrary", "Fiber")
+	viper.SetDefault("usingDocker", true)
+	viper.SetDefault("usingDatabase", false)
+	viper.SetDefault("database", "")
+	viper.SetDefault("orm", "")
 }
 
-func (s *PearlSettings) PrintSettings() {
+func PrintSettings() {
 	fmt.Println("Settings = {")
-	fmt.Println("\tName:", s.Name)
-	fmt.Println("\tReplacement:", s.Replacement)
-	fmt.Println("\tapiLibrary:", s.ApiLibrary)
-	fmt.Println("\tUsingDocker:", s.UsingDocker)
-	fmt.Println("\tUsingDatabase:", s.UsingDatabase)
-	fmt.Println("\tDatabase:", s.Database)
-	fmt.Println("\tOrm:", s.Orm)
+	fmt.Println("    Name:", viper.GetString("name"))
+	fmt.Println("    Replacement:", viper.GetStringMapString("replacement"))
+	fmt.Println("    apiLibrary:", viper.GetString("apiLibrary"))
+	fmt.Println("    UsingDocker:", viper.GetBool("usingDocker"))
+	fmt.Println("    UsingDatabase:", viper.GetBool("usingDatabase"))
+	fmt.Println("    Database:", viper.GetString("database"))
+	fmt.Println("    Orm:", viper.GetString("orm"))
 	fmt.Println("}")
 }
 
-func (s *PearlSettings) setApiLibrary(apiLibrary string) {
-	s.ApiLibrary = apiLibrary
+func SetApiLibrary(apiLibrary string) {
+	viper.Set("apiLibrary", apiLibrary)
 }
 
-func (s *PearlSettings) SetName(name string) {
-	s.Name = name
+func SetName(name string) {
+	viper.Set("name", name)
 }
 
-func (s *PearlSettings) ModifReplacement(key, value string) {
-	s.Replacement[key] = value
+func ModifReplacement(key, value string) {
+	viper.Set("replacement", map[string]string{
+		key: value,
+	})
 }
 
-func (s *PearlSettings) setUsingDocker(docker bool) {
-	s.UsingDocker = docker
+func SetUsingDocker(docker bool) {
+	viper.Set("usingDocker", docker)
 }
 
-func (s *PearlSettings) setUsingDatabase(database bool) {
-	s.UsingDatabase = database
+func SetUsingDatabase(database bool) {
+	viper.Set("usingDatabase", database)
 }
 
-func (s *PearlSettings) setDatabase(database string) {
-	s.Database = database
+func SetDatabase(database string) {
+	viper.Set("database", database)
 }
 
-func (s *PearlSettings) setOrm(orm string) {
-	s.Orm = orm
+func SetOrm(orm string) {
+	viper.Set("orm", orm)
 }

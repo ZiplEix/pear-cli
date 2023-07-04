@@ -2,12 +2,14 @@ package projectinit
 
 import (
 	"fmt"
+
+	"github.com/spf13/viper"
 )
 
 func PearlInit() {
 	fmt.Println("pearl init called")
 
-	Settings.initSettings()
+	initSettings()
 
 	// ask for project name
 	AskForProjectName()
@@ -21,5 +23,7 @@ func PearlInit() {
 	// Ask if a database is needed in the project
 	AskIfDatabase()
 
-	Settings.PrintSettings()
+	PrintSettings()
+
+	viper.WriteConfig()
 }

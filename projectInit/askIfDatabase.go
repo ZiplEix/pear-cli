@@ -10,7 +10,7 @@ func selectDatabase() {
 	}
 	database := prompt.GetSelect(promptContent, false)
 
-	Settings.setDatabase(database)
+	SetDatabase(database)
 }
 
 func selectOrm() {
@@ -21,7 +21,7 @@ func selectOrm() {
 	}
 	orm := prompt.GetSelect(promptContent, false)
 
-	Settings.setOrm(orm)
+	SetOrm(orm)
 }
 
 func AskIfDatabase() {
@@ -33,10 +33,10 @@ func AskIfDatabase() {
 	usingDatabase := prompt.GetSelect(promptContent, false)
 
 	if usingDatabase == "Yes" {
-		Settings.setUsingDatabase(true)
+		SetUsingDatabase(true)
 		selectDatabase()
 		selectOrm()
 	} else {
-		Settings.setUsingDatabase(false)
+		SetUsingDatabase(false)
 	}
 }

@@ -10,5 +10,5 @@ func AskWhichApiLibrary() {
 	}
 	apiLibrary := prompt.GetSelect(promptContent, false)
 
-	Settings.setApiLibrary(apiLibrary)
+	SetApiLibrary(apiLibrary)
 }

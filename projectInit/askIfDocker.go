@@ -11,10 +11,10 @@ func AskIfDocker() {
 	usingDocker := prompt.GetSelect(promptContent, false)
 
 	if usingDocker == "Yes" {
-		Settings.setUsingDocker(true)
+		SetUsingDocker(true)
 		AskForGoVersion()
 	} else {
-		Settings.setUsingDocker(false)
+		SetUsingDocker(false)
 	}
 }
 
@@ -30,5 +30,5 @@ func AskForGoVersion() {
 		return
 	}
 
-	Settings.ModifReplacement("{{GO_VERSION}}", goVersion)
+	ModifReplacement("{{GO_VERSION}}", goVersion)
 }

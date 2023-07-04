@@ -16,5 +16,5 @@ func AskForProjectName() {
 		return
 	}
 
-	Settings.SetName(projectName)
+	SetName(projectName)
 }
