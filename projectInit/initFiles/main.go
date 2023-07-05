@@ -44,4 +44,6 @@ func Init() {
 	}
 
 	initAirConfigFile()
+
+	initReadme()
 }
