@@ -42,4 +42,6 @@ func Init() {
 	if viper.GetBool("using_docker") {
 		initDockerFile()
 	}
+
+	initAirConfigFile()
 }
