@@ -1,7 +1,7 @@
 package initfiles
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -26,7 +26,12 @@ func initGoProject() {
 	}
 
 	// get the name of the package
-	goMod, err := ioutil.ReadFile("./go.mod")
+	file, err := os.Open("./go.mod")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	goMod, err := io.ReadAll(file)
 	if err != nil {
 		panic(err)
 	}
@@ -46,4 +51,8 @@ func Init() {
 	initAirConfigFile()
 
 	initReadme()
+
+	initMain()
+
+	initAppSetup()
 }
