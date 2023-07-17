@@ -1,7 +1,6 @@
 package initfiles
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
@@ -65,8 +64,6 @@ func SetupAndRunApp() error {
 func writeSetupFile() string {
 	packageName := viper.GetString("package_name")
 	var replacement replacementApi
-
-	fmt.Println("Using API lib:", viper.GetString("api_library"))
 
 	if viper.GetString("api_library") == "Fiber" {
 		replacement = FiberReplacement

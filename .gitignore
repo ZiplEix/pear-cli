@@ -1,5 +1,6 @@
 # Project-local
 pear-cli
+test/
 
 # Binaries for programs and plugins
 *.exe
