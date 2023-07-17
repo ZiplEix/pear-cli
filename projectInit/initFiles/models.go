@@ -9,6 +9,13 @@ type replacementApi struct {
 	ApiLogger                    string
 	ApiCors                      string
 	ApiListen                    string
+
+	AppType string
+
+	GetRoute    string
+	PostRoute   string
+	PutRoute    string
+	DeleteRoute string
 }
 
 type replacementOrm struct {
@@ -24,6 +31,13 @@ var FiberReplacement = replacementApi{
 	ApiLogger:                    "logger.New()",
 	ApiCors:                      "cors.New()",
 	ApiListen:                    "Listen",
+
+	AppType: "*fiber.App",
+
+	GetRoute:    "Get",
+	PostRoute:   "Post",
+	PutRoute:    "Put",
+	DeleteRoute: "Delete",
 }
 
 var GinReplacement = replacementApi{
@@ -35,6 +49,13 @@ var GinReplacement = replacementApi{
 	ApiLogger:                    "gin.Logger()",
 	ApiCors:                      "gin.Cors()",
 	ApiListen:                    "Run",
+
+	AppType: "*gin.Engine",
+
+	GetRoute:    "GET",
+	PostRoute:   "POST",
+	PutRoute:    "PUT",
+	DeleteRoute: "DELETE",
 }
 
 var GormReplacement = replacementOrm{
