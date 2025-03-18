@@ -1,33 +1,49 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
-	projectinit "github.com/ZiplEix/pear-cli/projectInit"
+	"github.com/ZiplEix/pear_cli/project"
 	"github.com/spf13/cobra"
+)
+
+var (
+	name    string
+	path    string
+	force   bool
+	air     bool
+	docker  bool
+	swagger bool
 )
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize your new API project.",
-	Long:  `Initialize your new API project.`,
+	Short: "Init a new classic go api project",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		projectinit.PearlInit()
+		project := project.NewProject(name, path, docker, air, swagger)
+		project.Init(force)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(initCmd)
 
+	initCmd.Flags().StringVarP(&name, "name", "n", "", "Project name (will be appended to the command 'go mod init')")
+	initCmd.Flags().StringVarP(&path, "path", "p", "./", "Project path")
+	initCmd.Flags().BoolVarP(&force, "force", "f", false, "Force the creation of the project even if the directory already exist")
+	initCmd.Flags().BoolVar(&air, "air", false, "Use air for daemonize the server")
+	initCmd.Flags().BoolVar(&docker, "docker", false, "Use docker for containerize the server")
+	initCmd.Flags().BoolVar(&swagger, "swagger", false, "Use swagger for documentation")
+
+	initCmd.MarkFlagRequired("name")
+
 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
+	// Cobra supports Persistent Flags which will work for this commanJJd
 	// and all subcommands, e.g.:
-	// intiCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// intiCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

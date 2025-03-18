@@ -1,0 +1,65 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/swagger"
+	"github.com/joho/godotenv"
+	"{{ .ProjectName }}/routes"
+
+	{{ if .Swagger }}_ "{{ .ProjectName }}/docs" // Swagger docs{{ end }}
+)
+
+func checkEnv() error {
+	log.Printf("Checking environment variables...")
+
+	if _, ok := os.LookupEnv("PORT"); !ok {
+		return errors.New("env var 'PORT' is not set")
+	}
+	if _, ok := os.LookupEnv("VERSION"); !ok {
+		return errors.New("env var 'VERSION' is not set")
+	}
+
+	log.Printf("Environment variables are set.")
+
+	return nil
+}
+
+func init() {
+	_ = godotenv.Load()
+
+	err := checkEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+{{ if .Swagger}}// @title {{ .ProjectName }}
+// @version 0.1.0
+// @description {{ .ProjectDescription }}
+// @host localhost:8080
+// @BasePath /
+// @contact.name TBD
+// @contact.email TBD{{ end }}
+func main() {
+	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:3000, http://localhost:8080",
+		AllowCredentials: true,
+		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH",
+		AllowHeaders:     "Origin, Content-Type, Accept",
+	}))
+
+	{{ if .Swagger }}app.Get("/swagger/*", swagger.HandlerDefault){{ end }}
+
+	routes.SetupRoutes(app)
+
+	fmt.Println("Server is running on http://localhost:" + os.Getenv("PORT"))
+	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
+}

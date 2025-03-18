@@ -1,0 +1,27 @@
+FROM {{ .BaseImage }}
+
+WORKDIR /app
+
+{{ if .Swagger }}
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+{{ end }}
+
+COPY go.mod go.sum ./
+
+RUN --mount=type=cache,target=/go/pkg/mod/ \
+--mount=type=bind,source=go.sum,target=go.sum \
+--mount=type=bind,source=go.mod,target=go.mod \
+go mod download -x
+
+COPY . .
+
+{{ if .Swagger }}
+RUN --mount=type=cache,target=/app/.swag_cache \
+    swag init --parseDependency --parseInternal --output /app/.swag_cache
+{{ end }}
+
+RUN go build -o app .
+
+EXPOSE 8080
+
+CMD ["./app"]
