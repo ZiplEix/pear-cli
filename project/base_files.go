@@ -65,6 +65,7 @@ func (p *Project) initCodeFile() error {
 		if err := generateCodeFile(data, fileName, tmplFile); err != nil {
 			return fmt.Errorf("Error generating %s code file: %v", fileName, err)
 		}
+		fmt.Println(fileName + " created")
 	}
 
 	return nil

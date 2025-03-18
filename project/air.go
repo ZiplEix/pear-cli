@@ -35,5 +35,7 @@ func (p *Project) initAir() error {
 		return fmt.Errorf("Error executing template: %v", err)
 	}
 
+	fmt.Println("Air config file created")
+
 	return nil
 }

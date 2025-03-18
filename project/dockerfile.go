@@ -51,5 +51,7 @@ func (p *Project) initDocker() error {
 		return fmt.Errorf("Error executing template: %v", err)
 	}
 
+	fmt.Println("Dockerfile created")
+
 	return nil
 }

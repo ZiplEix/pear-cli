@@ -32,5 +32,7 @@ func (p *Project) initEnv() error {
 		return fmt.Errorf("Error executing template: %v", err)
 	}
 
+	fmt.Println("Env file created")
+
 	return nil
 }
