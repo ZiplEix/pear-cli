@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/ZiplEix/pear_cli/project"
 	"github.com/spf13/cobra"
 )
@@ -13,17 +15,74 @@ var (
 	docker        bool
 	dockerCompose bool
 	swagger       bool
+	framework     string
 )
 
-// initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Init a new classic go api project",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		project := project.NewProject(name, path, docker, air, swagger, dockerCompose)
+		if needRepl(cmd) {
+			repl()
+		}
+
+		project := project.NewProject(name, path, docker, air, swagger, dockerCompose, framework)
 		project.Init(force)
 	},
+}
+
+func needRepl(cmd *cobra.Command) bool {
+	return !cmd.Flags().Changed("name") ||
+		(!cmd.Flags().Changed("path") &&
+			!cmd.Flags().Changed("air") &&
+			!cmd.Flags().Changed("docker") &&
+			!cmd.Flags().Changed("docker-compose") &&
+			!cmd.Flags().Changed("swagger"))
+}
+
+func ynToBool(yn string) bool {
+	return yn == "y" || yn == "yes"
+}
+
+func repl() {
+	// Ask for project name and path
+	fmt.Print("Enter project name: ")
+	_, _ = fmt.Scanln(&name)
+
+	fmt.Print("Enter project path (default './'): ")
+	_, _ = fmt.Scanln(&path)
+	if path == "" || path == "\n" {
+		path = "./"
+	}
+
+	// Ask for project features
+	var res string
+
+	fmt.Print("Do you want to use air for daemonize the server? (y/n): ")
+	_, _ = fmt.Scanln(&res)
+	air = ynToBool(res)
+
+	fmt.Print("Do you want to use docker for containerize the server? (y/n): ")
+	_, _ = fmt.Scanln(&res)
+	docker = ynToBool(res)
+
+	fmt.Print("Do you want to use docker-compose for containerize the server and his dependencies? (y/n): ")
+	_, _ = fmt.Scanln(&res)
+	dockerCompose = ynToBool(res)
+
+	fmt.Print("Do you want to use swagger for documentation? (y/n): ")
+	_, _ = fmt.Scanln(&res)
+	swagger = ynToBool(res)
+
+	// Ask for project framework
+	fmt.Print("Enter project framework (default 'fiber'): ")
+	_, _ = fmt.Scanln(&framework)
+	if framework == "" || framework == "\n" {
+		framework = "fiber"
+	}
+
+	fmt.Println()
 }
 
 func init() {
@@ -36,16 +95,5 @@ func init() {
 	initCmd.Flags().BoolVar(&docker, "docker", false, "Use docker for containerize the server")
 	initCmd.Flags().BoolVar(&dockerCompose, "docker-compose", false, "Use docker-compose for containerize the server and his dependencies")
 	initCmd.Flags().BoolVar(&swagger, "swagger", false, "Use swagger for documentation")
-
-	initCmd.MarkFlagRequired("name")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this commanJJd
-	// and all subcommands, e.g.:
-	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	initCmd.Flags().StringVar(&framework, "framework", "fiber", "Use a specific framework for the project")
 }

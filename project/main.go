@@ -21,7 +21,7 @@ type Project struct {
 	ApiFramework string `yaml:"apiFramework"`
 }
 
-func NewProject(name string, path string, docker, air, swagger, compose bool) *Project {
+func NewProject(name string, path string, docker, air, swagger, compose bool, framework string) *Project {
 	return &Project{
 		Name:         name,
 		Path:         path,
@@ -29,7 +29,7 @@ func NewProject(name string, path string, docker, air, swagger, compose bool) *P
 		Compose:      compose,
 		Air:          air,
 		Swagger:      swagger,
-		ApiFramework: "fiber",
+		ApiFramework: framework,
 	}
 }
 

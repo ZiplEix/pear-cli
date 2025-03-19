@@ -59,6 +59,10 @@ func generateCodeFile(data *CodeFileData, fileName, tmplFile string) error {
 func (p *Project) initCodeFile() error {
 	data := newCodeFileData(p.Swagger, p.Name, p.ApiFramework)
 
+	if _, err := os.Stat(fmt.Sprintf("../templates/%s", p.ApiFramework)); os.IsNotExist(err) {
+		return fmt.Errorf("Error: %s framework not supported", p.ApiFramework)
+	}
+
 	for _, file := range files {
 		fileName := file + ".go"
 		tmplFile := file + ".tmpl"
