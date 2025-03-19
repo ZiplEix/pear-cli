@@ -38,6 +38,12 @@ This command will create the basic structure of the project.
 - `--air` : Use air to daemonize the server.
 - `--docker` : Use Docker to containerize the server.
 - `--swagger` : Use Swagger for documentation.
+- `framework` : Framework to use. Default is `fiber`.
+- `full` : Use all features with their default values.
+
+#### Usable frameworks
+
+- `fiber` : Fiber framework.
 
 #### Generated projet structure (full features)
 

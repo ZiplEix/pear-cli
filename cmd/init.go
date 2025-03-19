@@ -16,6 +16,7 @@ var (
 	dockerCompose bool
 	swagger       bool
 	framework     string
+	full          bool
 )
 
 var initCmd = &cobra.Command{
@@ -23,13 +24,27 @@ var initCmd = &cobra.Command{
 	Short: "Init a new classic go api project",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		if needRepl(cmd) {
+		if needRepl(cmd) && !full {
 			repl()
+		}
+
+		if full {
+			setAllFeatures()
 		}
 
 		project := project.NewProject(name, path, docker, air, swagger, dockerCompose, framework)
 		project.Init(force)
 	},
+}
+
+func setAllFeatures() {
+	path = "./" + name
+	force = false
+	air = true
+	docker = true
+	dockerCompose = true
+	swagger = true
+	framework = "fiber"
 }
 
 func needRepl(cmd *cobra.Command) bool {
@@ -96,4 +111,5 @@ func init() {
 	initCmd.Flags().BoolVar(&dockerCompose, "docker-compose", false, "Use docker-compose for containerize the server and his dependencies")
 	initCmd.Flags().BoolVar(&swagger, "swagger", false, "Use swagger for documentation")
 	initCmd.Flags().StringVar(&framework, "framework", "fiber", "Use a specific framework for the project")
+	initCmd.Flags().BoolVar(&full, "full", false, "Create a full project with all the features")
 }
