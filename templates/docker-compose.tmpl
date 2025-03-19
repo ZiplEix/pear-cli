@@ -1,0 +1,23 @@
+services:
+  app:
+    build: .
+    container_name: app
+    environment:
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      {{ if .Redis }}- redis{{ end }}
+
+  {{ if .Redis }}redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - app-network
+    ports:
+      - "6379:6379"{{ end }}
+
+networks:
+  app-network:
+    driver: bridge

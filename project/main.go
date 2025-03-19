@@ -15,16 +15,18 @@ type Project struct {
 	Name         string `yaml:"name"`
 	Path         string `yaml:"path"`
 	Docker       bool   `yaml:"useDockerfile"`
+	Compose      bool   `yaml:"useDockerCompose"`
 	Air          bool   `yaml:"useAir"`
 	Swagger      bool   `yaml:"useSwagger"`
 	ApiFramework string `yaml:"apiFramework"`
 }
 
-func NewProject(name string, path string, docker, air, swagger bool) *Project {
+func NewProject(name string, path string, docker, air, swagger, compose bool) *Project {
 	return &Project{
 		Name:         name,
 		Path:         path,
 		Docker:       docker,
+		Compose:      compose,
 		Air:          air,
 		Swagger:      swagger,
 		ApiFramework: "fiber",
@@ -126,6 +128,12 @@ func (p *Project) Init(force bool) {
 
 	if p.Docker {
 		if err := p.initDocker(); err != nil {
+			panic(err)
+		}
+	}
+
+	if p.Compose {
+		if err := p.initCompose(); err != nil {
 			panic(err)
 		}
 	}

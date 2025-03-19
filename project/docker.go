@@ -20,6 +20,18 @@ func newDockerFileData(swagger bool) *DockerFileData {
 	}
 }
 
+type DockerComposeData struct {
+	Redis    bool
+	Postgres bool
+}
+
+func newComposeData(redis, postgres bool) *DockerComposeData {
+	return &DockerComposeData{
+		Redis:    redis,
+		Postgres: postgres,
+	}
+}
+
 func (p *Project) initDocker() error {
 	data := newDockerFileData(p.Swagger)
 
@@ -52,6 +64,30 @@ func (p *Project) initDocker() error {
 	}
 
 	fmt.Println("Dockerfile created")
+
+	return nil
+}
+
+func (p *Project) initCompose() error {
+	data := newComposeData(false, false)
+
+	tmpl, err := template.ParseFiles("../templates/docker-compose.tmpl")
+	if err != nil {
+		return fmt.Errorf("Error parsing template: %v", err)
+	}
+
+	file, err := os.Create("docker-compose.yml")
+	if err != nil {
+		return fmt.Errorf("Error opening docker-compose.yml: %v", err)
+	}
+	defer file.Close()
+
+	err = tmpl.Execute(file, data)
+	if err != nil {
+		return fmt.Errorf("Error executing template: %v", err)
+	}
+
+	fmt.Println("docker-compose.yml created")
 
 	return nil
 }

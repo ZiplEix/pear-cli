@@ -6,12 +6,13 @@ import (
 )
 
 var (
-	name    string
-	path    string
-	force   bool
-	air     bool
-	docker  bool
-	swagger bool
+	name          string
+	path          string
+	force         bool
+	air           bool
+	docker        bool
+	dockerCompose bool
+	swagger       bool
 )
 
 // initCmd represents the init command
@@ -20,7 +21,7 @@ var initCmd = &cobra.Command{
 	Short: "Init a new classic go api project",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		project := project.NewProject(name, path, docker, air, swagger)
+		project := project.NewProject(name, path, docker, air, swagger, dockerCompose)
 		project.Init(force)
 	},
 }
@@ -33,6 +34,7 @@ func init() {
 	initCmd.Flags().BoolVarP(&force, "force", "f", false, "Force the creation of the project even if the directory already exist")
 	initCmd.Flags().BoolVar(&air, "air", false, "Use air for daemonize the server")
 	initCmd.Flags().BoolVar(&docker, "docker", false, "Use docker for containerize the server")
+	initCmd.Flags().BoolVar(&dockerCompose, "docker-compose", false, "Use docker-compose for containerize the server and his dependencies")
 	initCmd.Flags().BoolVar(&swagger, "swagger", false, "Use swagger for documentation")
 
 	initCmd.MarkFlagRequired("name")
